@@ -16,12 +16,8 @@ function App() {
   }, [amountOfImages]);
 
   const renderImages = () => {
-    return dogImages.map(dogImage => {
-      return (
-        <div>
-          <img height="200" width="200" src={dogImage} />
-        </div>
-      );
+    return dogImages.map((dogImage, idx) => {
+      return <img key={`dog-${idx}`} height="200" width="200" src={dogImage} />;
     });
   };
 
@@ -36,6 +32,7 @@ function App() {
         <option>4</option>
         <option>5</option>
         <option>6</option>
+        <option>7</option>
         <option>8</option>
         <option>9</option>
         <option>10</option>
