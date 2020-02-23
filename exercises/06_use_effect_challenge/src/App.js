@@ -40,8 +40,7 @@ function App() {
               alt="Get Schwifty"
               id="get-schwifty"
               src={image}
-              width="500"
-              height="281"
+              height="250"
             />
           </a>
           <p id="photo-caption">
