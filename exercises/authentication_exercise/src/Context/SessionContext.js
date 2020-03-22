@@ -7,9 +7,8 @@ export const CookieProvider = ({ children }) => {
   const [uuid, setUUID] = useState(null);
   useEffect(() => {
     const uuid = getSessionCookie();
-    console.log({ uuid });
+
     setUUID(uuid);
-    console.log({ uuid });
   }, [uuid]);
   return (
     <CookieContext.Provider value={[uuid, setUUID]}>

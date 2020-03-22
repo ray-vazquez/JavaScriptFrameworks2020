@@ -9,7 +9,6 @@ function App({ history }) {
   const [password, setPassword] = useState("");
   const [uuid, setUUID] = useContext(CookieContext);
   const handleSubmit = async e => {
-    console.log("PASSWORD", password);
     e.preventDefault();
     const response = await axios.post(
       "http://localhost:7000/cookie/login",
