@@ -1,8 +1,9 @@
 import React, { useEffect, useContext } from "react";
 import { CookieContext } from "../Context/SessionContext";
+import { destroySessionCookie } from "../utils/Cookies.util";
 import axios from "axios";
 
-export const Users = () => {
+export const Users = ({ history }) => {
   const [uuid] = useContext(CookieContext);
   useEffect(() => {
     axios
@@ -24,5 +25,18 @@ export const Users = () => {
       });
   }, [uuid]);
 
-  return <div>Users</div>;
+  return (
+    <div>
+      Users
+      <button
+        onClick={() => {
+          console.log({ history });
+          destroySessionCookie();
+          history.push("/");
+        }}
+      >
+        Logout
+      </button>
+    </div>
+  );
 };

@@ -8,25 +8,32 @@ function App({ history }) {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [uuid, setUUID] = useContext(CookieContext);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [hasError, setError] = useState(false);
   const handleSubmit = async e => {
     e.preventDefault();
-    const response = await axios.post(
-      "http://localhost:7000/cookie/login",
-      {
-        username,
-        password
-      },
-      {
-        headers: {
-          "Content-Type": "application/json"
+    let response;
+    try {
+      response = await axios.post(
+        "http://localhost:7000/cookie/login",
+        {
+          username,
+          password
+        },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
+      );
+      if (response.data.message) {
+        setSessionCookie(response.data.uuid);
+        setUUID(response.data.uuid);
+        history.push("/Cookie/Users");
       }
-    );
-
-    if (response.data.message) {
-      setSessionCookie(response.data.uuid);
-      setUUID(response.data.uuid);
-      history.push("/Cookie/Users");
+    } catch (error) {
+      setError(true);
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -59,6 +66,11 @@ function App({ history }) {
               value={password}
             />
           </div>
+          {hasError && (
+            <div className="alert alert-danger" role="alert">
+              {errorMessage}
+            </div>
+          )}
           <button type="submit" className="btn btn-primary">
             Submit
           </button>

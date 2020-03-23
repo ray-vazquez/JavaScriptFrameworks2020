@@ -1,7 +1,6 @@
 import Cookies from "js-cookie";
 
 export const setSessionCookie = uuid => {
-  Cookies.remove("session");
   Cookies.set("session", uuid, { expires: 1 });
 };
 
@@ -12,4 +11,8 @@ export const getSessionCookie = () => {
   } else {
     return sessionCookie;
   }
+};
+
+export const destroySessionCookie = () => {
+  Cookies.remove("session");
 };
