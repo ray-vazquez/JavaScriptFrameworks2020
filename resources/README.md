@@ -9,7 +9,7 @@ Using your command line, you will need to navigate to the resources folder, inst
 ```bash
 cd resources
 yarn install
-node index.js
+yarn start
 ```
 
 After running the server on your machine, you will be greeted with a message Your server is running on http://localhost:7000 .
@@ -18,69 +18,89 @@ After running the server on your machine, you will be greeted with a message You
 
 The API is a REST based API. You must use Axios or FETCH with stand-alone promises or async and await.
 
-| Route                             | METHOD |                                      Response |
-| --------------------------------- | :----: | --------------------------------------------: |
-| http://localhost:7000/token/login |  POST  | Status 200 (Success) Status 401(Unauthorized) |
-| http://localhost:7000/token/users |  POST  | Status 200 (Success) Status 403(Unauthorized) |
+| Route                              | METHOD |                                      Response |
+| ---------------------------------- | :----: | --------------------------------------------: |
+| http://localhost:7000/token/login  |  POST  | Status 200 (Success) Status 401(Unauthorized) |
+| http://localhost:7000/token/movies |  GET   | Status 200 (Success) Status 403(Unauthorized) |
 
 ## Server JSON Response:
 
-On Success: http://localhost:7000/token/users
+On Success: http://localhost:7000/token/movies
 
-```
+```JSON
 {
-  "page": 1,
-  "perPage": 6,
-  "total": 12,
-  "totalPages": 2,
-  "data": [
-    {
-      "id": 1,
-      "email": "george.bluth@reqres.in",
-      "firstName": "George",
-      "lastName": "Bluth",
-      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg"
-    },
-    {
-      "id": 2,
-      "email": "janet.weaver@reqres.in",
-      "firstName": "Janet",
-      "lastName": "Weaver",
-      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"
-    },
-    {
-      "id": 3,
-      "email": "emma.wong@reqres.in",
-      "firstName": "Emma",
-      "lastName": "Wong",
-      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
-    },
-    {
-      "id": 4,
-      "email": "eve.holt@reqres.in",
-      "firstName": "Eve",
-      "lastName": "Holt",
-      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg"
-    },
-    {
-      "id": 5,
-      "email": "charles.morris@reqres.in",
-      "firstName": "Charles",
-      "lastName": "Morris",
-      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/stephenmoon/128.jpg"
-    },
-    {
-      "id": 6,
-      "email": "tracey.ramos@reqres.in",
-      "firstName": "Tracey",
-      "lastName": "Ramos",
-      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/bigmancho/128.jpg"
-    }
-  ],
-  "ad": {
-    "company": "StatusCode Weekly",
-    "url": "http://statuscode.org/",
-    "text": "A weekly newsletter focusing on software development, infrastructure, the server, performance, and the stack end of things."
+  "halloween": {
+    "title": "Halloween",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMmMzNjJhYjUtNzFkZi00MWQ4LWJiMDEtYWM0NTAzNGZjMTI3XkEyXkFqcGdeQXVyOTE2OTMwNDk@._V1_UX182_CR0,0,182,268_AL_.jpg",
+    "synopsis": "Laurie Strode comes to her final confrontation with Michael Myers, the masked figure who has haunted her since she narrowly escaped his killing spree on Halloween night four decades ago.",
+    "releaseDate": "Oct 19, 2018",
+    "times": [
+      "11:50 AM",
+      "1:20 PM",
+      "2:40 PM",
+      "4:20 PM",
+      "5:40 PM",
+      "7:20 PM",
+      "8:40 PM",
+      "9:20 PM",
+      "10:20 PM"
+    ]
+  },
+  "venom": {
+    "title": "Venom",
+    "poster": "https://m.media-amazon.com/images/M/MV5BNzAwNzUzNjY4MV5BMl5BanBnXkFtZTgwMTQ5MzM0NjM@._V1_UX182_CR0,0,182,268_AL_.jpg",
+    "synopsis": "One of Marvel’s most enigmatic, complex and badass characters comes to the big screen, starring Academy Award® nominated actor Tom Hardy as the lethal protector Venom.",
+    "releaseDate": "Oct 5, 2018",
+    "times": [
+      "11:20 AM",
+      "1:00 PM",
+      "4:00 PM",
+      "7:00 PM",
+      "10:00 PM"
+    ]
+  },
+  "a-star-is-born": {
+    "title": "A Star Is Born",
+    "poster": "https://m.media-amazon.com/images/M/MV5BNmE5ZmE3OGItNTdlNC00YmMxLWEzNjctYzAwOGQ5ODg0OTI0XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX182_CR0,0,182,268_AL_.jpg",
+    "synopsis": "A musician helps a young singer and actress find fame, even as age and alcoholism send his own career into a downward spiral.",
+    "releaseDate": "Oct 5, 2018",
+    "times": [
+      "12:00 PM",
+      "2:00 PM",
+      "3:20 PM",
+      "5:20 PM",
+      "6:40 PM",
+      "9:50 PM"
+    ]
   }
 }
 ```
+
+## Sample AJAX REQUEST FOR LOGIN
+
+```JAVASCRIPT
+axios("http://localhost:7000/token/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data: { username, password }
+    })
+      .then(resp => login(resp.data.token))
+
+```
+
+### SAMPLE REQUEST FOR GETTING MOVIES:
+
+`````JAVASCRIPT
+  axios("http://localhost:7000/token/movies", {
+      method: "GET",
+      headers: {
+        // Passing to the token to the API here, where it is a header.
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    })
+      .then(resp => console.log(resp.data.data))
+      ````
+`````
