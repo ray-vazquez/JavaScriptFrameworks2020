@@ -9,13 +9,17 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "test": "mocha"
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "chai": "^4.2.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "string-strip-html": "^4.3.19"
+    "mocha": "^7.1.1",
+    "string-strip-html": "^4.3.19",
+    "uuid": "^7.0.3"
   }
 }
