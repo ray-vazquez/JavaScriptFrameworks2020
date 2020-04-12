@@ -1,0 +1,21 @@
+{
+  "name": "2-book-store-server",
+  "author": "AlbanyCanCode",
+  "private": true,
+  "version": "1.0.0",
+  "engine": {
+    "node": "12.14.0",
+    "npm": "6.13.7"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "string-strip-html": "^4.3.19"
+  }
+}
