@@ -1,7 +1,8 @@
 const express = require("express");
 const axios = require("axios");
-const { cleanUpVolumeInfo } = require("../util");
-const { findShelfForBook } = require("../bookshelf");
+const stripHtml = require("string-strip-html");
+const Bookshelves = require("../models/Bookshelves");
+const { getUserId } = require("../middleware/auth");
 
 const Cache = require("../cache");
 const searchCache = new Cache();
@@ -14,6 +15,7 @@ router
   .route("/:bookTitle")
   .get((req, res) => {
     const { bookTitle } = req.params;
+    const userId = getUserId(req);
 
     if (bookTitle.length < 2) {
       searchCache.clear();
@@ -31,19 +33,16 @@ router
           .then((response) => {
             if (response.data.totalItems === 0) {
               const title = bookTitle.replace("+", " ");
-              res.send({
+              return res.send({
                 message: `No books matching "${title}" found.`,
                 books: [],
               });
             } else {
               const books = response.data.items.map((book) => {
-                return {
-                  id: book.id,
-                  ...cleanUpVolumeInfo(book.volumeInfo),
-                  shelf: findShelfForBook(book.id),
-                };
+                const shelf = Bookshelves.findShelfForBook(userId, book.id);
+                return Bookshelves.structureBook(book.id, book, shelf);
               });
-              res.send({ status: "complete", books });
+              return res.send({ status: "complete", books });
             }
           });
       } else return res.send({ status: "searching" });

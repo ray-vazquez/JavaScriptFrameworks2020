@@ -1,7 +1,7 @@
 const express = require("express");
 const axios = require("axios");
-const { cleanUpVolumeInfo } = require("../util");
-const { findShelfForBook } = require("../bookshelf");
+const Bookshelves = require("../models/Bookshelves");
+const { getUserId } = require("../middleware/auth");
 
 const methodNotAllowedError = require("../errors/methodNotAllowed");
 
@@ -11,19 +11,21 @@ router
   .route("/:bookId")
   .get((req, res) => {
     const { bookId } = req.params;
+    const userId = getUserId(req);
     axios
       .get(`https://www.googleapis.com/books/v1/volumes/${bookId}`)
       .then((response) => {
-        const newVolume = {
-          id: response.data.id,
-          ...cleanUpVolumeInfo(response.data.volumeInfo),
-          shelf: findShelfForBook(response.data.id),
-        };
-        res.send({ book: newVolume });
+        const shelf = Bookshelves.findShelfForBook(userId, bookId);
+        const book = Bookshelves.structureBook(
+          bookId,
+          response.data.volumeInfo,
+          shelf
+        );
+        return res.send({ book });
       })
       .catch((err) => {
         console.error(err);
-        res
+        return res
           .status(404)
           .send({ message: `No book with book ID ${bookId} found.` });
       });
