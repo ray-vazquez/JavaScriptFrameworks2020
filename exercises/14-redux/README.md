@@ -1,5 +1,7 @@
 # Redux Exercise
 
+In Visual Studio code, press `command+shift+v` (Mac) or `ctrl+shift+v` (Windows) to open a Markdown preview.
+
 You will be working on the redux only part of the application. The UI has already been completed for you.
 
 Remember, Redux contains three main players:
