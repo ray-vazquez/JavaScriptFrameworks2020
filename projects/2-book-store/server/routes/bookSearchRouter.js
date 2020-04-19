@@ -34,6 +34,7 @@ router
             if (response.data.totalItems === 0) {
               const title = bookTitle.replace("+", " ");
               return res.send({
+                status: "complete",
                 message: `No books matching "${title}" found.`,
                 books: [],
               });

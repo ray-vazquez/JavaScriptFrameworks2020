@@ -26,7 +26,7 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.use("/login", loginRouter);
+app.use("/signin", loginRouter);
 app.use("/bookshelf", bookshelfRouter);
 app.use("/book/search", bookSearchRouter);
 app.use("/book", bookRouter);
