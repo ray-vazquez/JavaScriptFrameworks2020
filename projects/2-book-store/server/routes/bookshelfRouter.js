@@ -25,8 +25,8 @@ router
       axios
         .get(`https://www.googleapis.com/books/v1/volumes/${bookId}`)
         .then((response) => {
-          const { volumeInfo } = response.data;
-          Bookshelves.updateBookshelf(userId, volumeInfo.id, volumeInfo, shelf);
+          const { id, volumeInfo } = response.data;
+          Bookshelves.updateBookshelf(userId, id, volumeInfo, shelf);
           const books = Bookshelves.getBookshelf(userId);
           return res.send({ books });
         })

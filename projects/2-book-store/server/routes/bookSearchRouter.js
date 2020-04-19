@@ -41,7 +41,11 @@ router
             } else {
               const books = response.data.items.map((book) => {
                 const shelf = Bookshelves.findShelfForBook(userId, book.id);
-                return Bookshelves.structureBook(book.id, book, shelf);
+                return Bookshelves.structureBook(
+                  book.id,
+                  book.volumeInfo,
+                  shelf
+                );
               });
               return res.send({ status: "complete", books });
             }
